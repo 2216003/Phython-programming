@@ -1,0 +1,27 @@
+import json
+tasks = []
+def load_tasks(filename='tasks.json'):
+    global tasks
+    try:
+        with open(filename, 'r') as file:
+            tasks = [Task(**task) for task in json.load(file)]
+    except FileNotFoundError:
+        tasks = []
+def save_tasks(filename='tasks.json'):
+    with open(filename, 'w') as file:
+        json.dump([task._dict_ for task in tasks], file)
+def add_task(title, description=''):
+    tasks.append(Task(title, description))
+def update_task(index, title=None, description=None, completed=None):
+    if title:
+        tasks[index].title = title
+    if description:
+        tasks[index].description = description
+    if completed is not None:
+        tasks[index].completed = completed
+def delete_task(index):
+    tasks.pop(index)
+def view_tasks():
+    for idx, task in enumerate(tasks):
+        print(f"{idx}. {task}")
+**
